@@ -11,6 +11,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export class GameScene extends Phaser.Scene {
   private gridEngine!: GridEngine;
   private dialogText!: Phaser.GameObjects.Text;
+  
 
   constructor() {
     super(sceneConfig);
@@ -50,14 +51,28 @@ export class GameScene extends Phaser.Scene {
     
     this.gridEngine.create(cloudCityTilemap, gridEngineConfig);
 
-    const dialogText = this.add.text(
+    const dialogTextGreet = this.add.text(
       1*48, // X position
       4*48, // Y position
       "", // Initial text
       {
         fontSize: '48px',
         wordWrap: { width: this.cameras.main.width - 32 },
-        color: '#000000'
+        color: '#000000',
+        // strokeThickness: 30,
+      }
+    );
+
+    const dialogTextKubePost = this.add.text(
+      5*48, // X position
+      5*48, // Y position
+      "", // Initial text
+      {
+        fontSize: '32px',
+        wordWrap: { width: this.cameras.main.width - 32 },
+        color: '#000000',
+        strokeThickness: 30,
+        
       }
     );
 
@@ -71,13 +86,38 @@ export class GameScene extends Phaser.Scene {
         console.log(this.gridEngine.getFacingPosition('player').y)
         console.log(enterTile.y)
         if(hasTrigger(cloudCityTilemap, enterTile) && 
+        !isKubeHousePost(cloudCityTilemap, enterTile) &&
         this.gridEngine.getFacingPosition('player').y == enterTile.y) {
           const dialogMessage = "Hi, I'm Milap!";
-          dialogText.text = dialogMessage
-          dialogText.visible = true;
+          dialogTextGreet.text = dialogMessage
+          dialogTextGreet.setShadowFill(true)
+          dialogTextGreet.visible = true;
         }
         else {
-          dialogText.visible = false;
+          dialogTextGreet.visible = false;
+        }
+      });
+
+      this.gridEngine
+      .positionChangeFinished()
+      .subscribe(({ charId, enterTile, exitTile }) => {
+        // Check if the player has entered tile (3, 6) and hide the dialog
+        // enterTile.y = enterTile.y 
+        // console.log(enterTile.x, enterTile.y)
+        console.log(this.gridEngine.getFacingDirection('player'))
+        console.log(this.gridEngine.getFacingPosition('player').y)
+        console.log(enterTile.y)
+        console.log(isKubeHousePost(cloudCityTilemap, enterTile))
+        if(isKubeHousePost(cloudCityTilemap, enterTile) &&
+        this.gridEngine.getFacingPosition('player').y == enterTile.y) {
+          const dialogMessageKubePost = "House of Kubernetes"
+          dialogTextKubePost.text = dialogMessageKubePost
+          dialogTextKubePost.setDepth(3)
+          dialogTextKubePost.setShadowFill(true)
+          dialogTextKubePost.visible = true;
+        }
+        else {
+          dialogTextKubePost.visible = false;
         }
       });
   }
@@ -93,29 +133,6 @@ export class GameScene extends Phaser.Scene {
     } else if (cursors.down.isDown) {
       this.gridEngine.move("player", Direction.DOWN);
     }
-    
-    // const title = this.add.text(16, 16, '', { fontFamily: 'Arial', fontSize: 64, color: '#00ff00' });
-    // dialogText.setScrollFactor(0);
-
-    // if(this.gridEngine.getPosition('player').x == 3 && this.gridEngine.getPosition('player').y == 6) {
-    //   this.input.keyboard.once('keydown-ENTER', () => {
-    //     const dialogMessage = "Hi I'm Milap!";
-    //     dialogText.text = dialogMessage
-    //   });
-    // }
-    
-
-    // this.gridEngine
-    //   .positionChangeFinished()
-    //   .subscribe(({ charId, enterTile }) => {
-    //     // Check if the player has entered tile (3, 6) and hide the dialog
-    //     if (charId === 'player' && enterTile.x != 3 || enterTile.y != 6) {
-    //       // console.log('not in hit box')
-    //       dialogText.visible = false;
-          
-          
-    //     }
-    //   });
   }
 
 
@@ -134,6 +151,13 @@ function hasTrigger(tilemap, position) {
   return tilemap.layers.some((layer) => {
     const tile = tilemap.getTileAt(position.x, position.y, false, layer.name);
     return tile?.properties?.interactive
+  });
+}
+
+function isKubeHousePost(tilemap, position) {
+  return tilemap.layers.some((layer) => {
+    const tile = tilemap.getTileAt(position.x, position.y, false, layer.name);
+    return tile?.properties?.postKube
   });
 }
 
@@ -162,4 +186,5 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
   parent: "game",
 };
 
-export const game = new Phaser.Game(gameConfig);
+export const game = new Phaser.Game(gameConfig)
+

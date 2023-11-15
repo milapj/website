@@ -28,7 +28,7 @@
          "name":"ground",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":20,
          "x":0,
          "y":0
@@ -59,7 +59,7 @@
          "name":"buildings",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":20,
          "x":0,
          "y":0
@@ -71,7 +71,7 @@
             0, 0, 0, 0, 0, 1156, 1157, 1157, 1157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 869, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 933, 0, 0, 914, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 872, 0, 933, 0, 0, 914, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 978, 0, 0, 0, 0, 0, 979, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -8220,6 +8220,11 @@
                          "name":"interactive",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"postKube",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -8234,6 +8239,11 @@
                          "name":"interactive",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"postKube",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -8637,6 +8647,11 @@
                          "name":"interactive",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"postKube",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -8651,6 +8666,11 @@
                          "name":"interactive",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"postKube",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
