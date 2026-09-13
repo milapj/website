@@ -36,7 +36,7 @@ jobs:
           mkdir -p dist
           cp index.html main.js CNAME dist/
           cp -R assets dist/assets
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
