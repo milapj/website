@@ -56,6 +56,11 @@ export class WellForm {
     const name = String(data.get('name') ?? '').trim();
     const email = String(data.get('email') ?? '').trim();
     const message = String(data.get('message') ?? '').trim();
+    const honeypot = String(data.get('_gotcha') ?? '');
+    if (honeypot) {
+      this.setStatus('The well is still.');
+      return;
+    }
     if (!WELL_ENDPOINT) {
       const subject = encodeURIComponent(`Word from the Well of Sending: ${name}`);
       const body = encodeURIComponent(`${message || '(no message)'}\n\nFrom: ${name} <${email}>`);
@@ -68,7 +73,7 @@ export class WellForm {
       const res = await fetch(WELL_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name, email, message, _subject: `Word from the Well of Sending: ${name}` }),
+        body: JSON.stringify({ name, email, message, _gotcha: honeypot, _subject: `Word from the Well of Sending: ${name}` }),
       });
       if (!res.ok) throw new Error(String(res.status));
       this.setStatus('Your words have been cast into the well. Milap shall hear them.');

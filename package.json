@@ -13,7 +13,7 @@
   "author": "Milap Jhumkhawala",
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.18.14",
+    "esbuild": "^0.25.12",
     "typescript": "^5.1.6"
   },
   "dependencies": {

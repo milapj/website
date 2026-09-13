@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://formspree.io https://cloudflareinsights.com; form-action 'self'; base-uri 'self'; object-src 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Dr. Milap Jhumkhawala</title>
     <meta
       name="description"
@@ -123,6 +128,8 @@
         <label>Your name <input name="name" required maxlength="80" autocomplete="name" /></label>
         <label>Your email <input name="email" type="email" required maxlength="120" autocomplete="email" /></label>
         <label>Your message (optional) <textarea name="message" rows="3" maxlength="600"></textarea></label>
+        <!-- honeypot: bots fill it, people never see it, Formspree drops it -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display: none" />
         <div class="row">
           <button type="submit">Cast into the well</button>
           <button type="button" class="secondary" id="well-cancel">Turn back</button>
