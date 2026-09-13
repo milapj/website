@@ -13,11 +13,11 @@
   "author": "Milap Jhumkhawala",
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.25.12",
-    "typescript": "^5.1.6"
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
-    "grid-engine": "^2.32.3",
-    "phaser": "^3.60.0"
+    "grid-engine": "^2.52.1",
+    "phaser": "^4.2.1"
   }
 }
