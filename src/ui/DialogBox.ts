@@ -25,6 +25,10 @@ export class DialogBox {
   private readonly bodyText: Phaser.GameObjects.Text;
   private readonly cursor: Phaser.GameObjects.Graphics;
   private readonly linkHint: Phaser.GameObjects.Text;
+  private readonly linkButton: Phaser.GameObjects.Graphics;
+  /** Link button bounds in game pixels, for canvas touch hit-testing. */
+  private linkRect = new Phaser.Geom.Rectangle();
+  private linkTouch: number | null = null;
   private cursorTween!: Phaser.Tweens.Tween;
 
   private pages: Dialog = [];
@@ -57,18 +61,60 @@ export class DialogBox {
     this.cursor.fillStyle(0xffe066, 1).fillTriangle(0, 0, 14, 0, 7, 9);
     this.cursor.setVisible(false);
 
-    this.linkHint = scene.add.text(0, 0, 'Letter O or tap here: open link', {
+    // a real button for links: big enough for a thumb, well inside the box
+    this.linkButton = scene.add.graphics();
+    this.linkHint = scene.add.text(0, 0, 'OPEN LINK  (or press O)', {
       fontFamily: PIXEL_FONT,
-      fontSize: '10px',
-      color: '#8fd3ff',
-      padding: { x: 6, y: 8 },
+      fontSize: '11px',
+      color: '#dff3ff',
     });
+    this.linkButton.setVisible(false);
     this.linkHint.setVisible(false);
     this.linkHint.setInteractive({ useHandCursor: true });
     this.linkHint.on('pointerdown', (pointer: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
       event.stopPropagation();
+      if (pointer.wasTouch) return; // touches are handled on the canvas below
       this.openLink();
     });
+    // touch: claim taps on the button before Phaser sees them (capture phase
+    // on the document), otherwise Phaser's own touchstart advances/closes the
+    // dialog first. The link opens on the matching touchend, a user gesture,
+    // so the browser allows the new tab.
+    const canvas = scene.game.canvas;
+    const onLinkButton = (t: Touch): boolean => {
+      if (!this.isOpen || !this.pages[this.pageIndex]?.link) return false;
+      const r = canvas.getBoundingClientRect();
+      const cam = scene.cameras.main;
+      const gx = ((t.clientX - r.left) * cam.width) / r.width;
+      const gy = ((t.clientY - r.top) * cam.height) / r.height;
+      return this.linkRect.contains(gx, gy);
+    };
+    document.addEventListener(
+      'touchstart',
+      (e) => {
+        for (const t of Array.from(e.changedTouches)) {
+          if (e.target === canvas && onLinkButton(t)) {
+            this.linkTouch = t.identifier;
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }
+      },
+      { capture: true, passive: false }
+    );
+    document.addEventListener(
+      'touchend',
+      (e) => {
+        for (const t of Array.from(e.changedTouches)) {
+          if (t.identifier !== this.linkTouch) continue;
+          this.linkTouch = null;
+          e.preventDefault();
+          e.stopPropagation();
+          if (onLinkButton(t)) this.openLink();
+        }
+      },
+      { capture: true, passive: false }
+    );
 
     this.container = scene.add.container(0, 0, [
       this.frame,
@@ -76,9 +122,12 @@ export class DialogBox {
       this.speakerText,
       this.bodyText,
       this.cursor,
+      this.linkButton,
       this.linkHint,
     ]);
-    this.container.setScrollFactor(0).setDepth(1000).setVisible(false);
+    // pin every child to the camera too; hit-testing uses the child's own
+    // scroll factor
+    this.container.setScrollFactor(0, 0, true).setDepth(1000).setVisible(false);
 
     scene.input.keyboard?.on('keydown-SPACE', this.advance, this);
     scene.input.keyboard?.on('keydown-ENTER', this.advance, this);
@@ -153,6 +202,7 @@ export class DialogBox {
     this.cursorTween.pause();
     this.drawTab(page.speaker ?? '');
     this.linkHint.setVisible(Boolean(page.link));
+    this.linkButton.setVisible(Boolean(page.link));
 
     this.typeTimer?.remove();
     this.typeTimer = this.scene.time.addEvent({
@@ -197,7 +247,16 @@ export class DialogBox {
 
     this.bodyText.setPosition(x + PADDING, y + PADDING + 6);
     this.bodyText.setWordWrapWidth(w - PADDING * 2, true);
-    this.linkHint.setPosition(x + PADDING, y + BOX_HEIGHT - PADDING - 4);
+    const bw = this.linkHint.width + 32;
+    const bh = 40;
+    const bx = x + PADDING + 4;
+    const by = y + BOX_HEIGHT - PADDING - bh - 2;
+    this.linkRect.setTo(bx - 8, by - 8, bw + 16, bh + 16); // generous touch target
+    this.linkButton.clear();
+    this.linkButton.fillStyle(0x0b0d1c, 1).fillRoundedRect(bx - 3, by - 3, bw + 6, bh + 6, 8);
+    this.linkButton.fillStyle(0x2c3570, 1).fillRoundedRect(bx, by, bw, bh, 6);
+    this.linkButton.lineStyle(2, 0x8fd3ff, 1).strokeRoundedRect(bx, by, bw, bh, 6);
+    this.linkHint.setPosition(bx + 16, by + (bh - this.linkHint.height) / 2);
     const cursorX = x + w - PADDING - 14;
     const cursorY = y + BOX_HEIGHT - PADDING - 6;
     this.cursor.setPosition(cursorX, cursorY);
