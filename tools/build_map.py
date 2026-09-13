@@ -236,8 +236,11 @@ for (x, y) in ((10, 6), (10, 7)):
 obj("statue", "statue", *hub(9, 8), dx=8, dy=8)  # centred over the 3-wide pool
 # only the water opens the well: the pool tiles (rows 9-11) are the sign;
 # the statue (rows 6-8) just blocks
+# collision only where the statue art is: its head (centre tile of row 6)
+# and its body (rows 7-8); the pool tiles are solid on their own
+block(*hub(10, 6))
 for x in range(9, 12):
-    for y in range(6, 9):
+    for y in (7, 8):
         block(*hub(x, y))
     for y in range(9, 12):
         obj("fountain", "sign", *hub(x, y))
