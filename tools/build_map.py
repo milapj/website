@@ -234,9 +234,13 @@ for (x, y) in ((10, 6), (10, 7)):
 # the statue is drawn by the scene as a sprite so it can sit a few pixels
 # lower than the tile grid, with its base on the pool's concrete rim
 obj("statue", "statue", *hub(9, 8), dx=8, dy=8)  # centred over the 3-wide pool
-for (x, y) in [(9 + dx, 6 + dy) for dx in range(3) for dy in range(3)]:
-    block(*hub(x, y))
-    obj("fountain", "sign", *hub(x, y))
+# the statue body (rows 7-8) and the pool itself (rows 9-11) open the well;
+# row 6 only holds the tips of the wings, so it blocks silently
+for x in range(9, 12):
+    block(*hub(x, 6))
+    for y in range(7, 12):
+        block(*hub(x, y))
+        obj("fountain", "sign", *hub(x, y))
 
 # direction boards next to each bridge
 sign("dir-education", *hub(2, 5), 873)
