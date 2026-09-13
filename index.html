@@ -1,8 +1,136 @@
-<style>
-  body {
-    background: black;
-  }
-</style>
-<div id="game"></div>
-
-<script src="main.js"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dr. Milap Jhumkhawala</title>
+    <meta
+      name="description"
+      content="Dr. Milap Jhumkhawala's personal website, built as a retro top-down game. Walk around town and explore my education, work experience and personal projects."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%90%B1%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #05060f;
+        overflow: hidden;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+      }
+      #game canvas {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+      /* The Well of Sending: an HTML form styled like the dialog box */
+      #well-form {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(5, 6, 15, 0.7);
+        font-family: 'Press Start 2P', 'Courier New', monospace;
+        z-index: 10;
+      }
+      #well-form[hidden] {
+        display: none;
+      }
+      #well-form .panel {
+        width: min(560px, 92vw);
+        background: #1b2140;
+        border: 4px solid #f4f4f8;
+        outline: 4px solid #0b0d1c;
+        box-shadow: inset 0 0 0 5px #1b2140, inset 0 0 0 7px #5865c9;
+        padding: 28px 26px 22px;
+        color: #f4f4f8;
+        font-size: 11px;
+        line-height: 1.8;
+      }
+      #well-form h2 {
+        margin: 0 0 10px;
+        font-size: 13px;
+        color: #ffe066;
+      }
+      #well-form label {
+        display: block;
+        margin-top: 12px;
+      }
+      #well-form input,
+      #well-form textarea {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 6px;
+        padding: 8px;
+        background: #0b0d1c;
+        color: #f4f4f8;
+        border: 2px solid #5865c9;
+        font: inherit;
+      }
+      #well-form .row {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      #well-form button {
+        font: inherit;
+        padding: 10px 14px;
+        background: #ffe066;
+        color: #1b2140;
+        border: 3px solid #0b0d1c;
+        cursor: pointer;
+      }
+      #well-form button.secondary {
+        background: #2c3570;
+        color: #f4f4f8;
+      }
+      #well-status {
+        min-height: 1.8em;
+        margin: 12px 0 0;
+        color: #8fd3ff;
+      }
+      /* Preload the pixel font so Phaser's first text render already has it. */
+      #font-preload {
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
+        font-family: 'Press Start 2P', monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <form id="well-form" hidden>
+      <div class="panel">
+        <h2>The Well of Sending</h2>
+        <p>
+          Cast your name and a way to reach you into the still water, and word
+          of it shall find Milap wherever he wanders.
+        </p>
+        <label>Your name <input name="name" required maxlength="80" autocomplete="name" /></label>
+        <label>Your email <input name="email" type="email" required maxlength="120" autocomplete="email" /></label>
+        <label>Your message (optional) <textarea name="message" rows="3" maxlength="600"></textarea></label>
+        <div class="row">
+          <button type="submit">Cast into the well</button>
+          <button type="button" class="secondary" id="well-cancel">Turn back</button>
+        </div>
+        <p id="well-status"></p>
+      </div>
+    </form>
+    <span id="font-preload">.</span>
+    <script src="main.js"></script>
+  </body>
+</html>

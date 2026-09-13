@@ -1,20 +1,23 @@
 {
-  "name": "grid-engine-ts-example",
-  "version": "1.0.0",
-  "description": "Grid Engine TypeScript Example",
+  "name": "milapj-website",
+  "version": "2.0.0",
+  "description": "Dr. Milap Jhumkhawala's personal website: a retro top-down game you walk through",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "esbuild main.ts --servedir=. --outfile=main.js --bundle --target=es2016"
+    "build": "esbuild src/main.ts --outfile=main.js --bundle --target=es2016 --minify",
+    "build:dev": "esbuild src/main.ts --outfile=main.js --bundle --target=es2016",
+    "serve": "esbuild src/main.ts --servedir=. --outfile=main.js --bundle --target=es2016",
+    "map": "python3 tools/build_map.py",
+    "typecheck": "tsc --noEmit"
   },
-  "author": "Annoraaq",
-  "license": "Apache-2.0",
+  "author": "Milap Jhumkhawala",
+  "license": "MIT",
   "devDependencies": {
     "esbuild": "^0.18.14",
     "typescript": "^5.1.6"
   },
   "dependencies": {
     "grid-engine": "^2.32.3",
-    "phaser": "^3.60.0",
-    "react": "18.2.0"
+    "phaser": "^3.60.0"
   }
 }

@@ -1,0 +1,92 @@
+{
+  "categories": [
+    {
+      "id": "programming",
+      "name": "Programming",
+      "skills": [
+        { "name": "bash", "tier": "silver" },
+        { "name": "C", "tier": "silver" },
+        { "name": "Groovy", "tier": "silver" },
+        { "name": "Java", "tier": "silver" },
+        { "name": "Python", "tier": "gold" },
+        { "name": "TypeScript", "tier": "silver" }
+      ]
+    },
+    {
+      "id": "testing",
+      "name": "Testing",
+      "skills": [
+        { "name": "Cucumber", "tier": "silver" },
+        { "name": "Goss", "tier": "bronze" },
+        { "name": "JUnit", "tier": "silver" },
+        { "name": "Mockito", "tier": "silver" },
+        { "name": "ScalaTest", "tier": "bronze" },
+        { "name": "PyTest", "tier": "silver" },
+        { "name": "Nosetests", "tier": "bronze" },
+        { "name": "Pact.io", "tier": "bronze" },
+        { "name": "Cypress", "tier": "silver" }
+      ]
+    },
+    {
+      "id": "observability",
+      "name": "Observability",
+      "skills": [
+        { "name": "Grafana", "tier": "silver" },
+        { "name": "Splunk", "tier": "silver" },
+        { "name": "ELK stack", "tier": "silver" },
+        { "name": "Prometheus", "tier": "silver" }
+      ]
+    },
+    {
+      "id": "cicd",
+      "name": "CI/CD",
+      "skills": [
+        { "name": "Jenkins", "tier": "gold" },
+        { "name": "Nexus", "tier": "bronze" },
+        { "name": "Packer", "tier": "bronze" },
+        { "name": "Puppet", "tier": "bronze" },
+        { "name": "Chef", "tier": "bronze" },
+        { "name": "AWS CloudFormation", "tier": "silver" },
+        { "name": "AWS CDK", "tier": "silver" },
+        { "name": "Terraform", "tier": "gold" },
+        { "name": "Flux CD", "tier": "gold" },
+        { "name": "Argo CD", "tier": "gold" },
+        { "name": "GitOps", "tier": "gold" },
+        { "name": "SonarQube", "tier": "silver" }
+      ]
+    },
+    {
+      "id": "databases",
+      "name": "Databases",
+      "skills": [
+        { "name": "MongoDB", "tier": "silver" },
+        { "name": "Elasticsearch", "tier": "silver" },
+        { "name": "PostgreSQL", "tier": "gold" },
+        { "name": "Redis", "tier": "silver" },
+        { "name": "ChromaDB", "tier": "silver" }
+      ]
+    },
+    {
+      "id": "containers",
+      "name": "Containers and Orchestration",
+      "skills": [
+        { "name": "Docker", "tier": "silver" },
+        { "name": "AWS ECS", "tier": "silver" },
+        { "name": "AWS EKS", "tier": "silver" },
+        { "name": "Kubernetes", "tier": "gold", "big": true }
+      ]
+    },
+    {
+      "id": "aimlops",
+      "name": "AI and MLOps",
+      "skills": [
+        { "name": "Ray", "tier": "gold" },
+        { "name": "Triton", "tier": "gold" },
+        { "name": "vLLM", "tier": "gold" },
+        { "name": "LangChain", "tier": "silver" },
+        { "name": "Databricks", "tier": "gold", "big": true },
+        { "name": "MCP", "tier": "silver" }
+      ]
+    }
+  ]
+}
