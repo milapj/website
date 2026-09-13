@@ -15,6 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: '#05060f',
   pixelArt: true,
   render: { antialias: false, roundPixels: true },
+  input: { activePointers: 3 }, // hold a direction with one thumb, tap the button with the other
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
