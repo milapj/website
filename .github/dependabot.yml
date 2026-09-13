@@ -7,6 +7,13 @@ updates:
     groups:
       all:
         patterns: ["*"]
+    ignore:
+      # grid-engine pins its Phaser peer dependency (~4.0.0); let grid-engine
+      # lead and only take Phaser patch releases
+      - dependency-name: phaser
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
