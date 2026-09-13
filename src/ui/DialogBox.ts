@@ -4,6 +4,7 @@ import type { Dialog } from '../content';
 export const PIXEL_FONT = '"Press Start 2P", "Courier New", monospace';
 
 const BOX_HEIGHT = 176;
+const NARROW = 700; // canvases narrower than this get a taller box and smaller type
 const MARGIN = 24;
 const PADDING = 26;
 const TYPE_DELAY_MS = 22;
@@ -56,12 +57,18 @@ export class DialogBox {
     this.cursor.fillStyle(0xffe066, 1).fillTriangle(0, 0, 14, 0, 7, 9);
     this.cursor.setVisible(false);
 
-    this.linkHint = scene.add.text(0, 0, 'Letter O: open link', {
+    this.linkHint = scene.add.text(0, 0, 'Letter O or tap here: open link', {
       fontFamily: PIXEL_FONT,
       fontSize: '10px',
       color: '#8fd3ff',
+      padding: { x: 6, y: 8 },
     });
     this.linkHint.setVisible(false);
+    this.linkHint.setInteractive({ useHandCursor: true });
+    this.linkHint.on('pointerdown', (pointer: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.openLink();
+    });
 
     this.container = scene.add.container(0, 0, [
       this.frame,
@@ -167,8 +174,16 @@ export class DialogBox {
     this.cursorTween.resume();
   }
 
+  private get boxHeight(): number {
+    return this.scene.cameras.main.width < NARROW ? 250 : BOX_HEIGHT;
+  }
+
   private layout(): void {
     const cam = this.scene.cameras.main;
+    const narrow = cam.width < NARROW;
+    const BOX_HEIGHT = this.boxHeight;
+    this.bodyText.setFontSize(narrow ? 11 : 15);
+    this.bodyText.setLineSpacing(narrow ? 8 : 11);
     const w = cam.width - MARGIN * 2;
     const x = MARGIN;
     const y = cam.height - BOX_HEIGHT - MARGIN;
@@ -202,7 +217,7 @@ export class DialogBox {
   private drawTab(speaker: string): void {
     const cam = this.scene.cameras.main;
     const x = MARGIN + 18;
-    const y = cam.height - BOX_HEIGHT - MARGIN - 22;
+    const y = cam.height - this.boxHeight - MARGIN - 22;
     this.speakerText.setText(speaker);
     this.tab.clear();
     if (!speaker) return;

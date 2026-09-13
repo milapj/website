@@ -10,9 +10,11 @@ into a stone hall. Every page load starts with an intro dialog.
 
 ## Stack
 
-- Phaser 3.60 renders the scene; `pixelArt: true`, canvas 1024x768 scaled with
-  `Scale.FIT` to the window.
-- Grid Engine 2.32 (Phaser plugin, `this.gridEngine`) does tile movement,
+- Phaser 4.0 renders the scene; `pixelArt: true`. The logical canvas is picked
+  by orientation at startup (1024x768 landscape, 420x746 portrait) and scaled
+  with `Scale.FIT`, so phones get a tall playfield instead of a letterboxed
+  strip. The dialog box uses smaller type and a taller box under 700px wide.
+- Grid Engine 2.52 (Phaser plugin, `this.gridEngine`) does tile movement,
   collision (`ge_collide` tile property), NPC follow and the
   `positionChangeFinished()` stream.
 - The map is **generated**, not hand-drawn: `tools/build_map.py` writes
@@ -55,6 +57,7 @@ or identity here. For `gh` commands run `gh auth switch --user milapj` first.
 | `src/scenes/WorldScene.ts` | Loads assets, builds the tilemap, creates the player and Myra, wires input, signs, portals, zone banners, the animated castle door, floating crystal sprites and Myra's bubble |
 | `src/ui/DialogBox.ts` | Retro dialog box fixed to the camera: speaker tab, typewriter text, bobbing "more" triangle. SPACE / ENTER / click finishes typing, advances, then closes |
 | `src/ui/SpeechBubble.ts` | Small world-space bubble that follows a sprite (Myra's "Feed me?") |
+| `src/ui/TouchPad.ts` | On-screen D-pad + action button for touch devices (semi-transparent white, bottom-right, only shown when the device has a coarse pointer). Holding a pad button sets `held`, which `WorldScene.update` treats like a held key |
 | `src/ui/WellForm.ts` | The Well of Sending contact form (an HTML overlay in `index.html`). POSTs to `WELL_ENDPOINT` from `content.ts` (a form-to-email service, no server needed) or falls back to a mailto: letter when the endpoint is empty. Disables the game's keyboard while open |
 | `src/content.ts` | **All words**: `INTRO_DIALOG`, `MYRA_BUBBLES` and the `INTERACTIONS` record keyed by plaque/sign id (merged with the generated trophy dialogs). Edit this to change what anything says |
 | `src/skills.json` + `src/skills.ts` | The trophy room's single source of truth: technologies grouped by category (categories only order them; they are not shown in-game), their tier (gold/silver/bronze) and `big` for the two showcase trophies. The generator reads the JSON to place trophies; `skills.ts` turns it into dialogs |

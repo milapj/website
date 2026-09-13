@@ -3,6 +3,7 @@ import { Direction, GridEngine, GridEngineConfig, Position } from 'grid-engine';
 import { DialogBox, PIXEL_FONT } from '../ui/DialogBox';
 import { SpeechBubble } from '../ui/SpeechBubble';
 import { WellForm } from '../ui/WellForm';
+import { TouchPad } from '../ui/TouchPad';
 import { INTERACTIONS, INTRO_DIALOG, MYRA_BUBBLES, type Dialog } from '../content';
 
 export const TILE = 16;
@@ -36,6 +37,7 @@ export class WorldScene extends Phaser.Scene {
   private dialog!: DialogBox;
   private bubble!: SpeechBubble;
   private well!: WellForm;
+  private pad!: TouchPad;
   private banner!: Phaser.GameObjects.Text;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: Record<'up' | 'down' | 'left' | 'right', Phaser.Input.Keyboard.Key>;
@@ -147,6 +149,7 @@ export class WorldScene extends Phaser.Scene {
     this.dialog = new DialogBox(this);
     this.bubble = new SpeechBubble(this);
     this.well = new WellForm(this);
+    this.pad = new TouchPad(this, () => this.tryInteract());
     this.addHud();
 
     this.dialog.open(INTRO_DIALOG);
@@ -163,6 +166,7 @@ export class WorldScene extends Phaser.Scene {
     else if (c.right.isDown || k.right.isDown) dir = Direction.RIGHT;
     else if (c.up.isDown || k.up.isDown) dir = Direction.UP;
     else if (c.down.isDown || k.down.isDown) dir = Direction.DOWN;
+    else if (this.pad.held) dir = this.pad.held;
     if (!dir) {
       this.bumpLock = false;
       return;
@@ -532,7 +536,7 @@ export class WorldScene extends Phaser.Scene {
 
   private addHud(): void {
     this.add
-      .text(14, 12, 'ARROWS / WASD: walk   SPACE: read / talk', {
+      .text(14, 12, TouchPad.isTouchDevice() ? 'D-PAD: walk   BUTTON: read / talk' : 'ARROWS / WASD: walk   SPACE: read / talk', {
         fontFamily: PIXEL_FONT,
         fontSize: '10px',
         color: '#dfe3ff',

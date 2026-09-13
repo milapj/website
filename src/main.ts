@@ -2,6 +2,12 @@ import * as Phaser from 'phaser';
 import { GridEngine } from 'grid-engine';
 import { WorldScene } from './scenes/WorldScene';
 
+// Landscape screens get the classic 4:3 canvas; portrait phones get a tall
+// one, so the world fills the screen instead of a letterboxed strip.
+const portrait = window.innerHeight > window.innerWidth;
+const GAME_WIDTH = portrait ? 420 : 1024;
+const GAME_HEIGHT = portrait ? 746 : 768;
+
 const config: Phaser.Types.Core.GameConfig = {
   title: 'Dr. Milap Jhumkhawala',
   type: Phaser.AUTO,
@@ -12,8 +18,8 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 1024,
-    height: 768,
+    width: GAME_WIDTH,
+    height: GAME_HEIGHT,
   },
   scene: [WorldScene],
   plugins: {
