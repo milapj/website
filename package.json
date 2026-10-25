@@ -17,7 +17,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "grid-engine": "^2.52.1",
+    "grid-engine": "^2.53.0",
     "phaser": "~4.0.0"
   }
 }
